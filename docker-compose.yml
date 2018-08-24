@@ -1,48 +1,45 @@
 version: '3'
 services:
   mysql:
-    image: mysql:5
+    image: mysql:5.7
     volumes:
       - "./data/db:/var/lib/mysql"
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: password
+    env_file: .env
   mailcatcher:
-     image: schickling/mailcatcher
-     ports:
-       - "1025:1025"
-       - "1080:1080"
-     environment:
-       MAILCATCHER_PORT: 1025
+    image: schickling/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    env_file: .env
   memcached:
     image: memcached:latest
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.5
-    environment:
-      ES_JAVA_OPTS: "-Xms750m -Xmx750m"
+    env_file: .env
     ports:
       - "9200:9200"
     volumes:
       - "./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
       - "./config/elasticsearch/plugins:/usr/share/elasticsearch/plugins"
   phpfpm:
-    image: 10up/phpfpm
+    image: 10up/phpfpm:latest
     depends_on:
       - mysql
       - memcached
       - elasticsearch
     volumes:
+      - "./bin:/docker/bin"
+      - "./data/dumps:/docker/dumps"
       - "./wordpress:/var/www/html"
       - "./config/php-fpm/php.ini:/usr/local/etc/php/php.ini"
       - "./config/php-fpm/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
       - "./config/php-fpm/wp-cli.local.yml:/var/www/html/wp-cli.local.yml"
       - ~/.ssh:/root/.ssh
+    env_file: .env
     extra_hosts:
-      - "docker-local.localhost:172.18.0.1"
+      - "dev.wordpress.com:172.18.0.1"
   nginx:
     depends_on:
       - phpfpm
