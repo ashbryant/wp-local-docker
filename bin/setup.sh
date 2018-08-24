@@ -183,7 +183,7 @@ else
 			fi
 
 			#Download paid for plugins, install & activate them, then remove the zip files (Thanks https://goo.gl/ktysp5)
-			wget -v -O acf-pro.zip "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=b3JkZXJfaWQ9MzQwMDV8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE0LTA3LTA5IDEwOjQ1OjA0" && \
+			wget -v -O acf-pro.zip "https://connect.advancedcustomfields.com/index.php?p=pro&a=download&k=" && \
 			wp plugin install acf-pro.zip --activate --allow-root && \
 			rm acf-pro.zip && \
 
