@@ -163,3 +163,11 @@ It's especially important to `git pull` the latest code before you `docker pull`
 ## Credits
 
 This project is our own flavor of an environment created by John Bloch.
+
+
+## Built-in Scripts
+* SSH to docker container: `npm run ssh` or `npm run ssh-root`
+* Install WordPress: `npm run setup-wordpress`
+* Install Roots Bedrock: `npm run setup-bedrock`
+* Backup MySQL databse: `npm run mysql-backup`
+* Restore MySQL database: `npm run mysql-restore`
